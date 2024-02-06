@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-gap: 10px;
+        }
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #eee;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .card:hover {
+            background-color: #ddd;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-board"></div>
+    <script>
+        const symbols = ['🍎', '🍉', '🍌', '🍒', '🥑', '🍍', '🍇', '🍋'];
+        let cards = [...symbols, ...symbols];
+        let flippedCards = [];
+        
+        const gameBoard = document.querySelector('.game-board');
+        
+        cards.forEach(symbol => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.textContent = symbol;
+            card.addEventListener('click', () => flipCard(card));
+            gameBoard.appendChild(card);
+        });
+        
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !flippedCards.includes(card)) {
+                card.classList.toggle('hidden');
+                flippedCards.push(card);
+        
+                if (flippedCards.length === 2) {
+                    const [firstCard, secondCard] = flippedCards;
+                    if (firstCard.textContent === secondCard.textContent) {
+                        flippedCards = [];
+                    } else {
+                        setTimeout(() => {
+                            firstCard.classList.toggle('hidden');
+                            secondCard.classList.toggle('hidden');
+                            flippedCards = [];
+                        }, 1000);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
